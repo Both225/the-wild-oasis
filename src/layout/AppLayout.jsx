@@ -1,19 +1,17 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import Logo from "../components/Logo";
 
 function AppLayout() {
   return (
-    <div className="grid h-screen w-full grid-cols-[20rem_1fr] grid-rows-[min-content_1fr]">
+    <div className="grid h-screen w-full grid-cols-[25rem_1fr] grid-rows-[min-content_1fr]">
+      <Logo />
       <Sidebar />
       <Header />
-      <Main />
+      <Outlet />
     </div>
   );
 }
 
 export default AppLayout;
-
-function Main() {
-  return <div className="bg-cyan-500">Main</div>;
-}
