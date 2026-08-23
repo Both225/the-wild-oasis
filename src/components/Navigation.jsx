@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Icon from "./Icon";
 
 const className = {
   padding: "0.8rem 1.2rem",
 };
 
 const navItem = [
-  { to: "/", label: "Dashboard" },
-  { to: "bookings", label: "Bookings" },
-  { to: "cabins", label: "Cabins" },
-  { to: "setting", label: "Settings" },
-  { to: "user", label: "User" },
+  { to: "/", label: "Dashboard", icon: "grid" },
+  { to: "bookings", label: "Bookings", icon: "calendar" },
+  { to: "cabins", label: "Cabins", icon: "home" },
+  { to: "setting", label: "Settings", icon: "settings" },
+  { to: "user", label: "User", icon: "user" },
 ];
 
-function Navigation() {
+function Navigation({ handleSelectedFeature }) {
   const [selectedItem, setSelectedItem] = useState("Dashboard");
 
   function handleSelectItem(item) {
@@ -28,6 +29,7 @@ function Navigation() {
           item={item}
           selectedItem={selectedItem}
           handleSelectItem={handleSelectItem}
+          handleSelectedFeature={handleSelectedFeature}
         >
           {item.label}
         </NavItem>
@@ -38,17 +40,30 @@ function Navigation() {
 
 export default Navigation;
 
-function NavItem({ children, item, selectedItem, handleSelectItem }) {
+function NavItem({
+  children,
+  item,
+  selectedItem,
+  handleSelectItem,
+  icon,
+  handleSelectedFeature,
+}) {
   const isSelectedItem = selectedItem === item.label;
 
   return (
     <li>
       <Link
-        onClick={() => handleSelectItem(item.label)}
+        onClick={() => {
+          handleSelectItem(item.label);
+          handleSelectedFeature(item.label);
+        }}
         style={className}
-        className={`block rounded-lg ${isSelectedItem ? "bg-[#6EE7B7]" : ""}`}
+        className={`flex items-center gap-4 rounded-lg ${isSelectedItem ? "bg-[#a1f4d3]" : ""}`}
         to={item.to}
       >
+        <span>
+          <Icon icon={item.icon} color={"black"} />
+        </span>
         {children}
       </Link>
     </li>
