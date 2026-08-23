@@ -1,20 +1,28 @@
-import { useEffect } from "react";
-import { fetchCabin } from "../../service/apiCabins";
+import { useQuery } from "@tanstack/react-query";
+import { getCabin } from "../../service/apiCabins";
+import CabinHeader from "./CabinHeader";
+import TableHeader from "./TableHeader";
+import TableRow from "./TableRow";
+import CabinTable from "./CabinTable";
 
 function CabinPage() {
-  useEffect(() => {
-    const getCabin = async () => {
-      const data = await fetchCabin();
-      console.log(data);
-    };
-
-    getCabin();
-  }, []);
+  const {
+    isLoading,
+    data: cabin,
+    error,
+  } = useQuery({
+    queryKey: ["cabin"],
+    queryFn: getCabin,
+  });
 
   return (
-    <div className="bg-surface-darker h-full w-full px-12 py-10">
-      Cabin Page
-      <img src="https://aeredkmacmcilqtntrls.supabase.co/storage/v1/object/public/cabins/1.jpg" />
+    <div className="bg-surface-darker h-full w-full px-18 py-10">
+      <CabinHeader />
+      <CabinTable>
+        <TableHeader />
+        <TableRow />
+        <TableRow />
+      </CabinTable>
     </div>
   );
 }

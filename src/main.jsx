@@ -9,6 +9,8 @@ import BookingPage from "./features/bookings/BookingPage.jsx";
 import CabinPage from "./features/cabins/CabinPage.jsx";
 import UserPage from "./features/user/UserPage.jsx";
 import SettingPage from "./features/setting/SettingPage.jsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const router = createBrowserRouter([
   {
@@ -39,8 +41,13 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-right" />
+    </QueryClientProvider>
   </StrictMode>,
 );
