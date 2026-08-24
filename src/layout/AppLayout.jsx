@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import Logo from "../components/Logo";
+import Logo from "../components/ui/Logo";
 import { useState } from "react";
 
 function AppLayout() {

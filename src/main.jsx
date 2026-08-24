@@ -11,6 +11,7 @@ import UserPage from "./features/user/UserPage.jsx";
 import SettingPage from "./features/setting/SettingPage.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,8 @@ createRoot(document.getElementById("root")).render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-right" />
+
+      <Toaster position="bottom-right" toastOptions={{ duration: 3000 }} />
     </QueryClientProvider>
   </StrictMode>,
 );
