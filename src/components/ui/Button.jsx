@@ -28,7 +28,7 @@ function Button({
   return (
     <button
       type={type}
-      onClick={() => onClick}
+      onClick={onClick}
       className={combinedClasses}
       disabled={disabled}
     >

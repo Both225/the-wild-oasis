@@ -5,8 +5,12 @@ import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
 import CabinTable from "./CabinTable";
 import CreateCabinForm from "./CreateCabinForm";
+import { useState } from "react";
+import Button from "../../components/ui/Button";
 
 function CabinPage() {
+  const [isCreateCabin, setIsCreateCabin] = useState(false);
+
   const {
     isLoading,
     data: cabins,
@@ -31,9 +35,18 @@ function CabinPage() {
               <TableRow key={cabin.id} cabin={cabin} />
             ))}
           </CabinTable>
-          <div className="mt-10">
-            <CreateCabinForm />
-          </div>
+          <Button
+            onClick={() => {
+              setIsCreateCabin(!isCreateCabin);
+            }}
+          >
+            Add Cabin
+          </Button>
+          {isCreateCabin && (
+            <div className="mt-10">
+              <CreateCabinForm />
+            </div>
+          )}
         </div>
       )}
     </div>
