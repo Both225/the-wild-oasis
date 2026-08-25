@@ -29,7 +29,8 @@ function CreateCabinForm() {
 
   // React Hook Form Function
   function onSubmit(data) {
-    mutate(data);
+    console.log(data);
+    mutate({ ...data, image: data.image[0] });
   }
 
   function onError(error) {
@@ -112,7 +113,7 @@ function CreateCabinForm() {
         <TextArea type="text" id="description" />
       </FormRow>
       <FormRow label="Cabin photo" id={"photo"} error={""}>
-        <Input type="text" id="photo" {...register("photo")} />
+        <Input type="file" id="photo" {...register("image")} />
       </FormRow>
       <div className="mr-118 space-x-5 self-center">
         <Button type="reset" variant="outline">
