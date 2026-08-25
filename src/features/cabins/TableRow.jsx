@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteCabin } from "../../service/apiCabins";
 import toast from "react-hot-toast";
+import Button from "../../components/ui/Button";
 
 function TableRow({ cabin }) {
   const {
@@ -31,14 +32,14 @@ function TableRow({ cabin }) {
       <p>{maxCapacity}</p>
       <p>{regularPrice}</p>
       <p>{discount}</p>
-      <button
-        onClick={() => {
-          mutate(cabinId);
-        }}
+      <Button
+        onClick={() => mutate(cabinId)}
+        className={"w-20"}
+        variant="danger"
         disabled={isDeleting}
       >
         Delete
-      </button>
+      </Button>
     </div>
   );
 }

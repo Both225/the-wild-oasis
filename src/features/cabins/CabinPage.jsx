@@ -4,7 +4,7 @@ import CabinHeader from "./CabinHeader";
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
 import CabinTable from "./CabinTable";
-import Input from "../../components/ui/Input";
+import CreateCabinForm from "./CreateCabinForm";
 
 function CabinPage() {
   const {
@@ -31,7 +31,9 @@ function CabinPage() {
               <TableRow key={cabin.id} cabin={cabin} />
             ))}
           </CabinTable>
-          <Input placeholder={"Input your name"} />
+          <div className="mt-10">
+            <CreateCabinForm />
+          </div>
         </div>
       )}
     </div>
