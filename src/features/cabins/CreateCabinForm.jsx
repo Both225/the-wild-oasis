@@ -39,67 +39,82 @@ function CreateCabinForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className="bg-surface grid w-full grid-cols-[30rem_1fr] items-center gap-8 px-20 py-10"
+      className="bg-surface inline-flex w-full flex-col justify-start gap-8 px-20 py-10"
     >
-      <Label htmlFor={"name"}>Cabin name</Label>
-      <Input
-        type={"text"}
-        {...register("name", { required: "This field is required" })}
-        id={"name"}
-      />
-      {errors?.name?.message && <p>{errors.name.message}</p>}
-      <Label htmlFor={"capacity"}>Maximum Capacity</Label>
-      <Input
-        type={"number"}
-        {...register("maxCapacity", {
-          required: "This field is required",
-          min: {
-            value: 1,
-            message: "Capacity must be atleast 1",
-          },
-        })}
-        id={"capacity"}
-      />
-      {errors?.maxCapacity?.message && <p>{errors.maxCapacity.message}</p>}
-      <Label htmlFor={"price"}>Regular Price</Label>
-      <Input
-        type={"number"}
-        {...register("price", {
-          required: "This field is required",
-          min: {
-            value: 1,
-            message: "Price must be atleast 1",
-          },
-        })}
-        id={"price"}
-      />
-      {errors?.price?.message && <p>{errors.price.message}</p>}
-      <Label htmlFor={"discount"}>Discount</Label>
-      <Input
-        type={"number"}
-        {...register("discount", {
-          required: "This field is required",
-          min: {
-            value: 1,
-            message: "Discount must be atleast 1",
-          },
-          validate: (value) =>
-            Number(value) <= Number(getValues().regularPrice) ||
-            "Discount must be less than regular price",
-        })}
+      <FormRow label={"Name"} id={"name"} error={errors?.name?.message}>
+        <Input
+          id={"name"}
+          type="text"
+          {...register("name", {
+            required: "This field is required",
+          })}
+        />
+      </FormRow>
+      <FormRow
+        label="Maximum Capacity"
+        id={"maxCapacity"}
+        error={errors?.maxCapacity?.message}
+      >
+        <Input
+          type={"number"}
+          id="maxCapacity"
+          {...register("maxCapacity", {
+            required: "This field is required",
+            min: {
+              value: 1,
+              message: "Minimum capicity is 1",
+            },
+          })}
+        />
+      </FormRow>
+      <FormRow
+        label="Regular Price"
+        id={"regularPrice"}
+        error={errors?.regularPrice?.message}
+      >
+        <Input
+          type="number"
+          id="regularPrice"
+          {...register("regularPrice", {
+            required: "This field is required",
+            min: {
+              value: 1,
+              message: "Price should be at least 1",
+            },
+          })}
+        />
+      </FormRow>
+      <FormRow
+        label="Discount"
         id={"discount"}
-      />
-      {errors?.discount?.message && <p>{errors.discount.message}</p>}
-      <Label htmlFor={"description"}>Description for cabin</Label>
-      <TextArea
-        type={"number"}
-        {...register("description", { required: "This field is required" })}
+        error={errors?.discount?.message}
+      >
+        <Input
+          type="number"
+          id="discount"
+          {...register("discount", {
+            required: "This field is required",
+            min: {
+              value: 1,
+              message: "Discount should be at least 1",
+            },
+            validate: (value) =>
+              Number(value) <= Number(getValues().regularPrice) ||
+              "Discount should be less than regular price",
+          })}
+        />
+      </FormRow>
+      <FormRow
+        label="Description for cabin"
         id={"description"}
-      />
-      {errors?.description?.message && <p>{errors.description.message}</p>}
-      <Label htmlFor={"photo"}>Cabin photo</Label>
-      <Input type={"text"} {...register("photo")} id={"photo"} />
-      <div className="col-start-2 ml-35 space-x-5 justify-self-start">
+        error={errors?.description?.message}
+      >
+        <TextArea type="text" id="description" />
+      </FormRow>
+      <FormRow label="Cabin photo" id={"photo"} error={""}>
+        <Input type="text" id="photo" {...register("photo")} />
+      </FormRow>
+      <div className="mr-118 space-x-5 self-center">
         <Button type="reset" variant="outline">
           Cancel
         </Button>
@@ -113,11 +128,12 @@ function CreateCabinForm() {
 
 export default CreateCabinForm;
 
-function FormRow({ label, children, error }) {
+function FormRow({ label, error, id, children }) {
   return (
-    <div>
-      {label && <Label>label</Label>}
-      <Input />
+    <div className="grid grid-cols-[20rem_min-content_1fr] gap-5">
+      {label && <Label htmlFor={id}>{label}</Label>}
+      {children}
+      {error && <p className="font-semibold text-red-500">{error}</p>}
     </div>
   );
 }
