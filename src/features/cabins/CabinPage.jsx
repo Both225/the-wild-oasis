@@ -27,7 +27,7 @@ function CabinPage() {
           Loading...
         </p>
       ) : (
-        <div>
+        <div className="bg-surface space-y-10 rounded-lg px-10 py-7">
           <CabinHeader />
           <CabinTable>
             <TableHeader />
@@ -36,11 +36,13 @@ function CabinPage() {
             ))}
           </CabinTable>
           <Button
+            className={"w-[20rem]"}
             onClick={() => {
               setIsCreateCabin(!isCreateCabin);
             }}
+            variant={isCreateCabin ? "danger" : "primary"}
           >
-            Add Cabin
+            {isCreateCabin ? "Close" : "Add Cabin"}
           </Button>
           {isCreateCabin && (
             <div className="mt-10">

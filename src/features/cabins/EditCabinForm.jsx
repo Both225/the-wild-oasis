@@ -1,27 +1,32 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
 
 import Label from "../../components/ui/Label";
 import Input from "../../components/ui/Input";
 import TextArea from "../../components/ui/TextArea";
 import Button from "../../components/ui/Button";
 
-import { useForm } from "react-hook-form";
-import { addCabin } from "../../service/apiCabins";
+import { editCabin } from "../../service/apiCabins";
 
-function CreateCabinForm() {
+function EditCabinForm({ cabinToEdit }) {
+  const { id: editId, ...editValue } = cabinToEdit;
+  const isEditSession = Boolean(editId);
+
   // React Hook Form
-  const { register, handleSubmit, reset, getValues, formState } = useForm();
+  const { register, handleSubmit, reset, getValues, formState } = useForm({
+    defaultValues: isEditSession ? editValue : {},
+  });
 
   const { errors } = formState;
 
   // React Query
   const queryClient = useQueryClient();
 
-  const { isLoading: isAdding, mutate } = useMutation({
-    mutationFn: (newCabin) => addCabin(newCabin),
+  const { isLoading: isEditing, mutate } = useMutation({
+    mutationFn: (cabin) => editCabin(cabin),
     onSuccess: () => {
-      toast("Cabin add success");
+      toast("Cabin edit success");
 
       queryClient.invalidateQueries("cabins");
       reset();
@@ -31,8 +36,10 @@ function CreateCabinForm() {
 
   // React Hook Form Function
   function onSubmit(data) {
+    const image = typeof data.image === "string" ? data.image : data.image[0];
+
     console.log(data);
-    mutate({ ...data, image: data.image[0] });
+    mutate({ ...data, image: image, id: editId });
   }
 
   function onError(error) {
@@ -115,21 +122,27 @@ function CreateCabinForm() {
         <TextArea type="text" id="description" />
       </FormRow>
       <FormRow label="Cabin photo" id={"photo"} error={""}>
-        <Input type="file" id="photo" {...register("image")} />
+        <Input
+          type="file"
+          id="photo"
+          {...register("image", {
+            required: isEditSession ? false : "This field is required",
+          })}
+        />
       </FormRow>
       <div className="mr-118 space-x-5 self-center">
         <Button type="reset" variant="outline">
           Cancel
         </Button>
-        <Button type="submit" variant="primary" disabled={isAdding}>
-          Add
+        <Button type="submit" variant="primary" disabled={isEditing}>
+          {isEditSession ? "Edit cabin" : "Create cabin"}
         </Button>
       </div>
     </form>
   );
 }
 
-export default CreateCabinForm;
+export default EditCabinForm;
 
 function FormRow({ label, error, id, children }) {
   return (
