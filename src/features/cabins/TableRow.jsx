@@ -1,12 +1,13 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCabin } from "../../service/apiCabins";
-import toast from "react-hot-toast";
-import Button from "../../components/ui/Button";
+import { useDeleteCabin } from "./useDeleteCabin";
 import { useState } from "react";
+
+import Button from "../../components/ui/Button";
 import EditCabinForm from "./EditCabinForm";
 
 function TableRow({ cabin }) {
   const [isEdit, setIsEdit] = useState(false);
+
+  const { isDeleting, deleteCabin } = useDeleteCabin();
 
   const {
     id: cabinId,
@@ -16,18 +17,6 @@ function TableRow({ cabin }) {
     discount,
     image,
   } = cabin;
-
-  const queryClient = useQueryClient(); // hook to use queryClient
-
-  const { isLoading: isDeleting, mutate } = useMutation({
-    mutationFn: (id) => deleteCabin(id),
-    onSuccess: () => {
-      toast("Cabin delete success");
-
-      queryClient.invalidateQueries("cabins"); // make queryClient refetch after delete data by telling which query is invalid "cabins" queryKey
-    },
-    onError: (error) => toast(error),
-  });
 
   return (
     <>
@@ -40,7 +29,7 @@ function TableRow({ cabin }) {
         <div className="space-x-5">
           <Button onClick={() => setIsEdit((isEdit) => !isEdit)}>Edit</Button>
           <Button
-            onClick={() => mutate(cabinId)}
+            onClick={() => deleteCabin(cabinId)}
             className={"w-20"}
             variant="danger"
             disabled={isDeleting}
