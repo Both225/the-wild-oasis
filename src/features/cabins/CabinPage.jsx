@@ -1,24 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
-import { getCabin } from "../../service/apiCabins";
+import { useCabins } from "./useCabins";
+import { useState } from "react";
+
 import CabinHeader from "./CabinHeader";
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
 import CabinTable from "./CabinTable";
 import CreateCabinForm from "./CreateCabinForm";
-import { useState } from "react";
 import Button from "../../components/ui/Button";
 
 function CabinPage() {
   const [isCreateCabin, setIsCreateCabin] = useState(false);
 
-  const {
-    isLoading,
-    data: cabins,
-    error,
-  } = useQuery({
-    queryKey: ["cabins"],
-    queryFn: getCabin,
-  });
+  const { isLoading, cabins } = useCabins();
 
   return (
     <div className="bg-surface-darker h-full w-full px-18 py-10">

@@ -4,7 +4,7 @@ import { addCabin as addCabinApi } from "../../service/apiCabins";
 import { useForm } from "react-hook-form";
 
 export function useCreateCabin() {
-  const { reset } = useForm();
+  const { reset, getValues } = useForm();
 
   const queryClient = useQueryClient();
 
@@ -14,7 +14,7 @@ export function useCreateCabin() {
       toast("Cabin add success");
 
       queryClient.invalidateQueries(["cabins"]);
-      reset();
+      reset(getValues());
     },
     onError: (error) => toast(error),
   });
