@@ -121,7 +121,7 @@ function EditCabinForm({ cabinToEdit, onCloseModal }) {
           Cancel
         </Button>
         <Button type="submit" variant="primary" disabled={isEditing}>
-          {isEditSession ? "Edit cabin" : "Create cabin"}
+          {"Edit cabin"}
         </Button>
       </div>
     </form>
