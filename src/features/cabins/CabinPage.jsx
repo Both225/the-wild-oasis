@@ -1,16 +1,28 @@
 import { useCabins } from "./useCabins";
-import { useState } from "react";
 
 import CabinHeader from "./CabinHeader";
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
 import CabinTable from "./CabinTable";
-import CreateCabinForm from "./CreateCabinForm";
-import Button from "../../components/ui/Button";
 import AddCabin from "./AddCabin";
+import { useSearchParams } from "react-router-dom";
 
 function CabinPage() {
   const { isLoading, cabins } = useCabins();
+
+  const [searchParams] = useSearchParams();
+
+  const filterValue = searchParams.get("discount") || "all";
+
+  let filterCabin;
+
+  if (filterValue === "all") filterCabin = cabins;
+
+  if (filterValue === "no-discount")
+    filterCabin = cabins?.filter((cabin) => cabin.discount === 0);
+
+  if (filterValue === "with-discount")
+    filterCabin = cabins?.filter((cabin) => cabin.discount > 0);
 
   return (
     <div className="bg-surface-darker h-full w-full px-18 py-10">
@@ -23,7 +35,7 @@ function CabinPage() {
           <CabinHeader />
           <CabinTable>
             <TableHeader />
-            {cabins.map((cabin) => (
+            {filterCabin.map((cabin) => (
               <TableRow key={cabin.id} cabin={cabin} />
             ))}
           </CabinTable>

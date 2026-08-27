@@ -82,9 +82,9 @@ function CreateCabinForm({ onCloseModal }) {
           type="number"
           id="discount"
           {...register("discount", {
-            required: "This field is required",
+            required: false,
             min: {
-              value: 1,
+              value: 0,
               message: "Discount should be at least 1",
             },
             validate: (value) =>
