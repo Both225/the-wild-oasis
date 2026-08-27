@@ -7,10 +7,9 @@ import TableRow from "./TableRow";
 import CabinTable from "./CabinTable";
 import CreateCabinForm from "./CreateCabinForm";
 import Button from "../../components/ui/Button";
+import AddCabin from "./AddCabin";
 
 function CabinPage() {
-  const [isCreateCabin, setIsCreateCabin] = useState(false);
-
   const { isLoading, cabins } = useCabins();
 
   return (
@@ -28,20 +27,7 @@ function CabinPage() {
               <TableRow key={cabin.id} cabin={cabin} />
             ))}
           </CabinTable>
-          <Button
-            className={"w-[20rem]"}
-            onClick={() => {
-              setIsCreateCabin(!isCreateCabin);
-            }}
-            variant={isCreateCabin ? "danger" : "primary"}
-          >
-            {isCreateCabin ? "Close" : "Add Cabin"}
-          </Button>
-          {isCreateCabin && (
-            <div className="mt-10">
-              <CreateCabinForm />
-            </div>
-          )}
+          <AddCabin />
         </div>
       )}
     </div>

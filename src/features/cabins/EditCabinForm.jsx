@@ -6,7 +6,7 @@ import Input from "../../components/ui/Input";
 import TextArea from "../../components/ui/TextArea";
 import Button from "../../components/ui/Button";
 
-function EditCabinForm({ cabinToEdit }) {
+function EditCabinForm({ cabinToEdit, onCloseModal }) {
   const { id: editId, ...editValue } = cabinToEdit;
   const isEditSession = Boolean(editId);
 
@@ -25,6 +25,7 @@ function EditCabinForm({ cabinToEdit }) {
 
     console.log(data);
     editCabin({ ...data, image: image, id: editId });
+    onCloseModal();
   }
 
   function onError(error) {
@@ -34,7 +35,7 @@ function EditCabinForm({ cabinToEdit }) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className="bg-surface inline-flex w-full flex-col justify-start gap-8 px-20 py-10"
+      className="bg-surface flex w-full flex-col justify-start gap-6 px-20"
     >
       <FormRow label={"Name"} id={"name"} error={errors?.name?.message}>
         <Input
@@ -115,8 +116,8 @@ function EditCabinForm({ cabinToEdit }) {
           })}
         />
       </FormRow>
-      <div className="mr-118 space-x-5 self-center">
-        <Button type="reset" variant="outline">
+      <div className="mr-5 justify-end gap-3 space-x-5 self-end">
+        <Button type="reset" variant="outline" onClick={onCloseModal}>
           Cancel
         </Button>
         <Button type="submit" variant="primary" disabled={isEditing}>

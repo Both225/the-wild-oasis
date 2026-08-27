@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import Button from "../../components/ui/Button";
 import EditCabinForm from "./EditCabinForm";
+import Modal from "../../components/ui/Modal";
 
 function TableRow({ cabin }) {
   const [isEdit, setIsEdit] = useState(false);
@@ -38,7 +39,15 @@ function TableRow({ cabin }) {
           </Button>
         </div>
       </div>
-      {isEdit && <EditCabinForm cabinToEdit={cabin} />}
+      {isEdit && (
+        <Modal isOpen={isEdit} onClose={() => setIsEdit(!isEdit)}>
+          <EditCabinForm
+            cabinToEdit={cabin}
+            onCloseModal={() => setIsEdit(!isEdit)}
+          />
+          ;
+        </Modal>
+      )}
     </>
   );
 }

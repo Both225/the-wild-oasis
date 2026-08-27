@@ -6,7 +6,7 @@ import Input from "../../components/ui/Input";
 import TextArea from "../../components/ui/TextArea";
 import Button from "../../components/ui/Button";
 
-function CreateCabinForm() {
+function CreateCabinForm({ onCloseModal }) {
   // React Hook Form
   const { register, handleSubmit, getValues, formState } = useForm();
 
@@ -18,6 +18,7 @@ function CreateCabinForm() {
   function onSubmit(data) {
     console.log(data);
     createCabin({ ...data, image: data.image[0] });
+    onCloseModal();
   }
 
   function onError(error) {
@@ -27,7 +28,7 @@ function CreateCabinForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className="bg-surface inline-flex w-full flex-col justify-start gap-8 px-20 py-10"
+      className="bg-surface flex w-full flex-col justify-start gap-6 px-20"
     >
       <FormRow label={"Name"} id={"name"} error={errors?.name?.message}>
         <Input
@@ -102,8 +103,8 @@ function CreateCabinForm() {
       <FormRow label="Cabin photo" id={"photo"} error={""}>
         <Input type="file" id="photo" {...register("image")} />
       </FormRow>
-      <div className="mr-118 space-x-5 self-center">
-        <Button type="reset" variant="outline">
+      <div className="justify-end gap-3 space-x-5 self-end">
+        <Button type="reset" variant="outline" onClick={onCloseModal}>
           Cancel
         </Button>
         <Button type="submit" variant="primary" disabled={isAdding}>
