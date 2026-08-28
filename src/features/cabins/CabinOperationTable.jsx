@@ -24,7 +24,7 @@ function Filter({ filterField, options }) {
   }
 
   return (
-    <div className="space-x-5 shadow-sm">
+    <div className="h-full space-x-5 shadow-sm">
       {options.map((option) => (
         <FilterButton
           key={option.value}

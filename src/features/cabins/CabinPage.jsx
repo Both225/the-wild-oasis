@@ -12,6 +12,7 @@ function CabinPage() {
 
   const [searchParams] = useSearchParams();
 
+  // 1.Filter discount
   const filterValue = searchParams.get("discount") || "all";
 
   let filterCabin;
@@ -24,6 +25,18 @@ function CabinPage() {
   if (filterValue === "with-discount")
     filterCabin = cabins?.filter((cabin) => cabin.discount > 0);
 
+  // 2.SortBy value
+
+  const sortBy = searchParams.get("sortBy") || "";
+
+  const [field, direction] = sortBy.split("-");
+
+  const modifier = direction === "asc" ? 1 : -1;
+
+  const sortByCabin = filterCabin?.sort(
+    (a, b) => (a[field] - b[field]) * modifier,
+  );
+
   return (
     <div className="bg-surface-darker h-full w-full px-18 py-10">
       {isLoading ? (
@@ -35,7 +48,7 @@ function CabinPage() {
           <CabinHeader />
           <CabinTable>
             <TableHeader />
-            {filterCabin.map((cabin) => (
+            {sortByCabin.map((cabin) => (
               <TableRow key={cabin.id} cabin={cabin} />
             ))}
           </CabinTable>
