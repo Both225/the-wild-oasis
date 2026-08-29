@@ -7,11 +7,12 @@ function BookingsTableRow({ booking }) {
     created_at,
     startDate,
     endDate,
-    numNights,
     status,
     totalPrice,
     guestId: { fullName, email },
   } = booking;
+
+  // Calculate days
   const bookDate = format(parseISO(created_at), "yyyy-MM-dd");
 
   const daysAgo = differenceInDays(new Date(), new Date(bookDate));
@@ -36,7 +37,7 @@ function BookingsTableRow({ booking }) {
           </p>
         </div>
         <Status status={status} />
-        <p className="font-semibold">{totalPrice}$</p>
+        <p className="text-primary text-center font-semibold">{totalPrice}$</p>
       </div>
     </>
   );

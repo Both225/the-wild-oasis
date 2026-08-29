@@ -5,7 +5,7 @@ function BookingsTableHeader() {
       <p>Guest</p>
       <p>Dates</p>
       <p className="text-center">Status</p>
-      <p>Amount</p>
+      <p className="text-center">Amount</p>
     </div>
   );
 }
