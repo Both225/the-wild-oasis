@@ -1,9 +1,13 @@
 import supabase from "./supabase";
 
-export async function getBookings() {
-  const { data: bookings, error } = await supabase
+export async function getBookings(filter) {
+  let query = supabase
     .from("bookings")
-    .select("*, cabinId(*), guestId(*)");
+    .select("*, cabinId(name), guestId(fullName, email)");
+
+  if (filter) query.eq(filter.field, filter.value);
+
+  const { data: bookings, error } = await query;
 
   if (error) {
     console.log(error);
@@ -16,7 +20,7 @@ export async function getBookings() {
 export async function getBooking(id) {
   const { data: booking, error } = await supabase
     .from("bookings")
-    .select("*, cabins(*), guests(*)")
+    .select("*, cabins(name), guests(fullName, email)")
     .eq("id", id)
     .single();
 

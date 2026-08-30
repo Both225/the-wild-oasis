@@ -1,5 +1,6 @@
 import SortBy from "../../components/ui/SortBy";
-import CabinOperationTable from "./CabinOperationTable";
+import OperationalTable from "../../components/ui/OperationalTable";
+import Filter from "../../components/ui/Filter";
 
 function CabinHeader() {
   const sortOptions = [
@@ -11,13 +12,19 @@ function CabinHeader() {
     { value: "maxCapacity-desc", label: "Sort by capacity (high first)" },
   ];
 
+  const filterOptions = [
+    { value: "all", label: "All" },
+    { value: "no-discount", label: "No-discount" },
+    { value: "with-discount", label: "With-Discount" },
+  ];
+
   return (
     <div className="flex w-full items-center justify-between">
       <h1 className="text-[2.4rem] font-semibold">All cabins</h1>
-      <div className="flex items-center gap-5">
-        <CabinOperationTable />
-        <SortBy options={sortOptions} />
-      </div>
+      <OperationalTable>
+        <Filter filterField="discount" options={filterOptions} />
+        <SortBy options={sortOptions} />;
+      </OperationalTable>
     </div>
   );
 }

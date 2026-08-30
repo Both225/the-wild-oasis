@@ -54,6 +54,11 @@ async function insertBookings() {
     console.log(bookingError);
   }
 
+  if (cabinsError || guestsError) {
+    console.log(cabinsError, guestsError);
+    throw new Error(`${cabinsError} ${guestsError}`);
+  }
+
   console.log("click");
 
   return booking;
