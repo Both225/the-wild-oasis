@@ -10,32 +10,32 @@ import { useSearchParams } from "react-router-dom";
 function CabinPage() {
   const { isLoading, cabins } = useCabins();
 
-  const [searchParams] = useSearchParams();
+  // const [searchParams] = useSearchParams();
 
   // 1.Filter discount
-  const filterValue = searchParams.get("discount") || "all";
+  // const filterValue = searchParams.get("discount") || "all";
 
-  let filterCabin;
+  // let filterCabin;
 
-  if (filterValue === "all") filterCabin = cabins;
+  // if (filterValue === "all") filterCabin = cabins;
 
-  if (filterValue === "no-discount")
-    filterCabin = cabins?.filter((cabin) => cabin.discount === 0);
+  // if (filterValue === "no-discount")
+  //   filterCabin = cabins?.filter((cabin) => cabin.discount === 0);
 
-  if (filterValue === "with-discount")
-    filterCabin = cabins?.filter((cabin) => cabin.discount > 0);
+  // if (filterValue === "with-discount")
+  //   filterCabin = cabins?.filter((cabin) => cabin.discount > 0);
 
   // 2.SortBy value
 
-  const sortBy = searchParams.get("sortBy") || "";
+  // const sortBy = searchParams.get("sortBy") || "";
 
-  const [field, direction] = sortBy.split("-");
+  // const [field, direction] = sortBy.split("-");
 
-  const modifier = direction === "asc" ? 1 : -1;
+  // const modifier = direction === "asc" ? 1 : -1;
 
-  const sortByCabin = filterCabin?.sort(
-    (a, b) => (a[field] - b[field]) * modifier,
-  );
+  // const sortByCabin = filterCabin?.sort(
+  //   (a, b) => (a[field] - b[field]) * modifier,
+  // );;
 
   return (
     <div className="bg-surface-darker h-full w-full px-18 py-10">
@@ -48,7 +48,7 @@ function CabinPage() {
           <CabinHeader />
           <CabinTable>
             <TableHeader />
-            {sortByCabin.map((cabin) => (
+            {cabins.map((cabin) => (
               <TableRow key={cabin.id} cabin={cabin} />
             ))}
           </CabinTable>

@@ -1,7 +1,19 @@
 import supabase from "./supabase";
 
-export async function getCabin() {
-  const { data, error } = await supabase.from("cabins").select("*");
+export async function getCabin({ filter, sortBy }) {
+  let query = supabase.from("cabins").select("*");
+
+  if (filter) {
+    if (filter.value === "no-discount")
+      query.or(`${filter.field}.eq.0,${filter.field}.is.null`);
+    if (filter.value === "with-discount") query.gt(`${filter.field}`, 0);
+  }
+
+  if (sortBy) {
+    query.order(sortBy.field, { ascending: sortBy.direction === "asc" });
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.log(error);
