@@ -1,3 +1,4 @@
+import Pagination from "../../components/ui/Pagination";
 import BookingsHeader from "./BookingsHeader";
 import BookingsTable from "./BookingsTable";
 import BookingsTableHeader from "./BookingsTableHeader";
@@ -7,6 +8,8 @@ import { useBooking } from "./useBookings";
 function BookingPage() {
   const { bookings } = useBooking();
 
+  if (!bookings) return <p>Loading</p>;
+
   return (
     <div className="bg-surface-darker h-full w-full px-18 py-10">
       <div className="bg-surface space-y-10 rounded-lg px-10 py-7">
@@ -14,9 +17,10 @@ function BookingPage() {
         <BookingsTable>
           <BookingsTableHeader />
           {bookings?.map((booking) => (
-            <BookingsTableRow key={booking.id} booking={booking} />
+            <BookingsTableRow booking={booking} key={booking.id} />
           ))}
         </BookingsTable>
+        <Pagination count={15} />
       </div>
     </div>
   );

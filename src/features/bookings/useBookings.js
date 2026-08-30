@@ -12,15 +12,15 @@ export function useBooking() {
     !filterValue || filterValue === "all"
       ? null
       : { field: "status", value: filterValue };
-
   // Sort
-  const sortByRaw = searchParams.get("sortBy");
+  const sortByRaw = searchParams.get("sortBy") || "totalPrice-asc";
   const [field, direction] = sortByRaw.split("-");
 
   const sortBy = { field, direction };
 
   const { data: bookings, isLoading } = useQuery({
     queryFn: () => getBookingsApi({ filter, sortBy }),
+
     queryKey: ["bookings", filter, sortBy],
   });
 
