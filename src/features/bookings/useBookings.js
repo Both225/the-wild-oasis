@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom";
 export function useBooking() {
   const [searchParams] = useSearchParams();
 
+  // Filter
   const filterValue = searchParams.get("status");
 
   const filter =
@@ -12,9 +13,15 @@ export function useBooking() {
       ? null
       : { field: "status", value: filterValue };
 
+  // Sort
+  const sortByRaw = searchParams.get("sortBy");
+  const [field, direction] = sortByRaw.split("-");
+
+  const sortBy = { field, direction };
+
   const { data: bookings, isLoading } = useQuery({
-    queryFn: () => getBookingsApi(filter),
-    queryKey: ["bookings", filter],
+    queryFn: () => getBookingsApi({ filter, sortBy }),
+    queryKey: ["bookings", filter, sortBy],
   });
 
   return { isLoading, bookings };
