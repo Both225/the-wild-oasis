@@ -6,7 +6,7 @@ import BookingsTableRow from "./BookingsTableRow";
 import { useBooking } from "./useBookings";
 
 function BookingPage() {
-  const { bookings } = useBooking();
+  const { bookings, count, page } = useBooking();
 
   if (!bookings) return <p>Loading</p>;
 
@@ -20,7 +20,7 @@ function BookingPage() {
             <BookingsTableRow booking={booking} key={booking.id} />
           ))}
         </BookingsTable>
-        <Pagination count={15} />
+        <Pagination count={count} page={page} />
       </div>
     </div>
   );

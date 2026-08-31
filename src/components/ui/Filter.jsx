@@ -8,6 +8,7 @@ function Filter({ filterField, options }) {
 
   function handleFilterOption(value) {
     searchParams.set(filterField, value);
+    searchParams.set("page", 0);
     setSearchParams(searchParams);
   }
 
