@@ -1,3 +1,4 @@
+import ActionDropDown from "../../components/ui/ActionDropDown";
 import Status from "../../components/ui/Status";
 import { differenceInDays, format, parseISO } from "date-fns";
 
@@ -19,9 +20,11 @@ function BookingsTableRow({ booking }) {
 
   const nightsToStay = differenceInDays(new Date(endDate), new Date(startDate));
 
+  const dropdownOptions = [{ value: "detail", label: "Detail" }];
+
   return (
     <>
-      <div className="grid grid-cols-[10rem_1fr_1fr_1fr_14rem] items-center justify-center gap-10">
+      <div className="grid grid-cols-[10rem_1fr_1fr_1fr_14rem_min-content] items-center justify-center gap-10">
         <p>{bookingId}</p>
         <div>
           <p className="font-medium">{fullName}</p>
@@ -38,6 +41,7 @@ function BookingsTableRow({ booking }) {
         </div>
         <Status status={status} />
         <p className="text-primary text-center font-semibold">{totalPrice}$</p>
+        <ActionDropDown items={dropdownOptions} handleMenuClick={() => {}} />
       </div>
     </>
   );

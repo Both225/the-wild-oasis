@@ -12,6 +12,7 @@ import SettingPage from "./features/setting/SettingPage.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
+import BookingDetail from "./pages/BookingDetail.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "/bookings",
         element: <BookingPage />,
+      },
+      {
+        path: "/bookings/:bookingId",
+        element: <BookingDetail />,
       },
       {
         path: "/cabins",
