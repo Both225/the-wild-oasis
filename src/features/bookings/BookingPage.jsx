@@ -1,4 +1,5 @@
 import Pagination from "../../components/ui/Pagination";
+import Spinner from "../../components/ui/Spinner";
 import BookingsHeader from "./BookingsHeader";
 import BookingsTable from "./BookingsTable";
 import BookingsTableHeader from "./BookingsTableHeader";
@@ -6,9 +7,9 @@ import BookingsTableRow from "./BookingsTableRow";
 import { useBooking } from "./useBookings";
 
 function BookingPage() {
-  const { bookings, count, page } = useBooking();
+  const { bookings, count, page, isLoading } = useBooking();
 
-  if (!bookings) return <p>Loading</p>;
+  if (isLoading) return <Spinner />;
 
   return (
     <div className="bg-surface-darker h-full w-full px-18 py-10">
