@@ -44,7 +44,7 @@ function DetailContainer() {
           <span>Sun, Jul 02 2023</span>
         </p>
       </div>
-      <div className="px-10 py-8">
+      <div className="space-y-8 px-10 py-8">
         <div className="flex items-center gap-25 font-medium">
           <p>
             <span className="mr-4">
@@ -55,6 +55,14 @@ function DetailContainer() {
           <p className="text-gray-500">kaoviboth25@gmail.com</p>
           <p className="text-gray-500">National ID 12345678910</p>
         </div>
+        <p className="font-medium">
+          Breakfast include? <span className="ml-5 font-normal">Yes</span>
+        </p>
+        <div className="flex justify-between rounded-md bg-yellow-200 px-10 py-10 font-semibold text-yellow-700">
+          <p>Total price $1900.00($2134.00 cabin + $2137.00 breakfast) </p>
+          <p className="uppercase">Will pay at property</p>
+        </div>
+        <p className="text-end">Booked Wed, May 10 2023, 19:44</p>
       </div>
     </section>
   );
