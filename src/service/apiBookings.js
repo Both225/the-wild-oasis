@@ -30,13 +30,29 @@ export async function getBookings({ filter, sortBy, page }) {
 export async function getBooking(id) {
   const { data: booking, error } = await supabase
     .from("bookings")
-    .select("*, cabins(name), guests(fullName, email)")
+    .select("*, cabinId(name), guestId(fullName, email)")
     .eq("id", id)
     .single();
 
   if (error) {
     console.log(error);
     throw new Error("Booking could not be loaded");
+  }
+
+  return booking;
+}
+
+export async function updateStatus({ id, status }) {
+  const { data: booking, error } = await supabase
+    .from("bookings")
+    .update({ status: status })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error("Status can't update");
   }
 
   return booking;

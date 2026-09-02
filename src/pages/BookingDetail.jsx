@@ -1,26 +1,21 @@
 import { Button } from "antd";
 import { HiArrowLeft, HiFlag, HiOutlineHome } from "react-icons/hi";
 import Status from "../components/ui/Status";
-import { useBooking } from "../features/bookings/useBookings";
+import { useBooking } from "../features/bookings/useBooking";
 import Spinner from "../components/ui/Spinner";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function BookingDetail() {
-  const { bookingId } = useParams();
-  const { bookings, isLoading } = useBooking();
+  const { booking, isLoading } = useBooking();
 
   if (isLoading) return <Spinner />;
 
-  const selectedBooking = bookings.find(
-    (booking) => booking.id === Number(bookingId),
-  );
-
-  console.log(selectedBooking);
+  if (!booking) return <Spinner />;
 
   return (
     <div className="bg-surface-darker h-full w-full px-18 py-10">
       <div className="bg-surface space-y-10 rounded-lg pt-7">
-        <DetailContainer booking={selectedBooking} />
+        <DetailContainer booking={booking} />
       </div>
     </div>
   );
@@ -55,13 +50,13 @@ function DetailContainer({ booking }) {
   const isPaid = rawIsPaid ? "Already paid" : "will paid at property";
 
   return (
-    <section>
+    <section className="flex flex-col pb-10">
       <header className="flex items-center justify-between space-y-10 px-10">
         <div className="flex items-center gap-10">
           <h1 className="text-[2.4rem] font-bold">
             Booking <span>#{bookingId}</span>
           </h1>
-          <Status status={"Unconfirmed"} />
+          <Status status={status} />
         </div>
         <Button
           type="link"
@@ -105,8 +100,21 @@ function DetailContainer({ booking }) {
           </p>
           <p className="uppercase">{isPaid}</p>
         </div>
-        <p className="text-end">Booked {created_at.split("T")[0]}</p>
+        <p className="text-end">Booked {created_at?.split("T")[0]}</p>
       </div>
+      {status === "unconfirmed" && (
+        <Button
+          style={{
+            backgroundColor: "#10b981",
+            width: "fit-content",
+            alignSelf: "end",
+            marginRight: "3rem",
+          }}
+          type="primary"
+        >
+          Check In
+        </Button>
+      )}
     </section>
   );
 }
