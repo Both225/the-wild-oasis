@@ -1,7 +1,7 @@
 function Status({ status }) {
   return (
     <div className="w-fit place-self-center rounded-4xl bg-cyan-200 px-5 py-1">
-      <p className="justify-center text-center text-[1.4rem] font-bold text-blue-600">
+      <p className="justify-center text-center text-[1.4rem] font-semibold text-blue-500">
         {status}
       </p>
     </div>

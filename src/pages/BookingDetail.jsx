@@ -1,68 +1,111 @@
 import { Button } from "antd";
 import { HiArrowLeft, HiFlag, HiOutlineHome } from "react-icons/hi";
 import Status from "../components/ui/Status";
+import { useBooking } from "../features/bookings/useBookings";
+import Spinner from "../components/ui/Spinner";
+import { useNavigate, useParams } from "react-router-dom";
 
 function BookingDetail() {
+  const { bookingId } = useParams();
+  const { bookings, isLoading } = useBooking();
+
+  if (isLoading) return <Spinner />;
+
+  const selectedBooking = bookings.find(
+    (booking) => booking.id === Number(bookingId),
+  );
+
+  console.log(selectedBooking);
+
   return (
     <div className="bg-surface-darker h-full w-full px-18 py-10">
       <div className="bg-surface space-y-10 rounded-lg pt-7">
-        <DetailHeader />
-        <DetailContainer />
+        <DetailContainer booking={selectedBooking} />
       </div>
     </div>
   );
 }
 
-function DetailHeader() {
-  return (
-    <header className="flex items-center justify-between px-10">
-      <div className="flex items-center gap-10">
-        <h1 className="text-[2.4rem] font-bold">
-          Booking <span>#9</span>
-        </h1>
-        <Status status={"Unconfirmed"} />
-      </div>
-      <Button type="link" icon={<HiArrowLeft />} style={{ fontWeight: "600" }}>
-        Back
-      </Button>
-    </header>
-  );
-}
+function DetailContainer({ booking }) {
+  const navigate = useNavigate();
 
-function DetailContainer() {
+  const {
+    id: bookingId,
+    startDate,
+    endDate,
+    cabinPrice: rawCabinPrice,
+    extrasPrice: rawExtrasPrice,
+    totalPrice: rawTotalPrice,
+    status,
+    hasBreakfast: rawHasBreakfast,
+    isPaid: rawIsPaid,
+    obeservation,
+    numNights,
+    cabinId,
+    guestId: guest,
+    created_at,
+  } = booking;
+
+  const cabinPrice = rawCabinPrice ?? 180;
+  const extrasPrice = rawExtrasPrice ?? 60;
+  const totalPrice = rawTotalPrice ?? cabinPrice + extrasPrice;
+
+  const hasBreakfast = rawHasBreakfast ? "true" : "false";
+
+  const isPaid = rawIsPaid ? "Already paid" : "will paid at property";
+
   return (
     <section>
+      <header className="flex items-center justify-between space-y-10 px-10">
+        <div className="flex items-center gap-10">
+          <h1 className="text-[2.4rem] font-bold">
+            Booking <span>#{bookingId}</span>
+          </h1>
+          <Status status={"Unconfirmed"} />
+        </div>
+        <Button
+          type="link"
+          icon={<HiArrowLeft />}
+          style={{ fontWeight: "600" }}
+          onClick={() => navigate(-1)}
+        >
+          Back
+        </Button>
+      </header>
       <div className="bg-primary flex justify-between px-10 py-8 font-semibold text-white">
         <div className="flex items-center gap-5">
           <HiOutlineHome color="white" size={28} />
           <p>
-            <span>15</span> nights in cabin <span>002</span>
+            <span>{numNights}</span> nights in cabin <span>{cabinId.name}</span>
           </p>
         </div>
         <p>
-          <span>Sat, Jun 17 2023 (in month)</span> -{" "}
-          <span>Sun, Jul 02 2023</span>
+          <span>{startDate} (in month)</span> - <span>{endDate}</span>
         </p>
       </div>
-      <div className="space-y-8 px-10 py-8">
+      <div className="space-y-12 px-10 py-8">
         <div className="flex items-center gap-25 font-medium">
           <p>
             <span className="mr-4">
               <HiFlag style={{ display: "inline-block" }} color="#10b981" />
             </span>
-            Kao Viboth
+            {guest.fullName}
           </p>
-          <p className="text-gray-500">kaoviboth25@gmail.com</p>
+          <p className="text-gray-500">{guest.email}</p>
           <p className="text-gray-500">National ID 12345678910</p>
         </div>
         <p className="font-medium">
-          Breakfast include? <span className="ml-5 font-normal">Yes</span>
+          Breakfast include?{" "}
+          <span className="ml-5 font-normal">{hasBreakfast}</span>
         </p>
         <div className="flex justify-between rounded-md bg-yellow-200 px-10 py-10 font-semibold text-yellow-700">
-          <p>Total price $1900.00($2134.00 cabin + $2137.00 breakfast) </p>
-          <p className="uppercase">Will pay at property</p>
+          <p>
+            Total price {totalPrice} ({cabinPrice} cabin + {extrasPrice}
+            breakfast){" "}
+          </p>
+          <p className="uppercase">{isPaid}</p>
         </div>
-        <p className="text-end">Booked Wed, May 10 2023, 19:44</p>
+        <p className="text-end">Booked {created_at.split("T")[0]}</p>
       </div>
     </section>
   );

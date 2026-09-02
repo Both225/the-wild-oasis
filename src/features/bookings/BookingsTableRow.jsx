@@ -1,8 +1,12 @@
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ActionDropDown from "../../components/ui/ActionDropDown";
 import Status from "../../components/ui/Status";
 import { differenceInDays, format, parseISO } from "date-fns";
 
 function BookingsTableRow({ booking }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
   const {
     id: bookingId,
     created_at,
@@ -12,6 +16,10 @@ function BookingsTableRow({ booking }) {
     totalPrice,
     guestId: { fullName, email },
   } = booking;
+
+  function onClickDetali(bookingId) {
+    navigate(`/bookings/${bookingId}`);
+  }
 
   // Calculate days
   const bookDate = format(parseISO(created_at), "yyyy-MM-dd");
@@ -41,7 +49,10 @@ function BookingsTableRow({ booking }) {
         </div>
         <Status status={status} />
         <p className="text-primary text-center font-semibold">{totalPrice}$</p>
-        <ActionDropDown items={dropdownOptions} handleMenuClick={() => {}} />
+        <ActionDropDown
+          items={dropdownOptions}
+          handleMenuClick={() => onClickDetali(bookingId)}
+        />
       </div>
     </>
   );
