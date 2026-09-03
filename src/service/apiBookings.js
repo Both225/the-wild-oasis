@@ -57,3 +57,18 @@ export async function updateStatus({ id, status }) {
 
   return booking;
 }
+
+export async function updateBooking({ id, field, value }) {
+  const { data: booking, error } = await supabase
+    .from("bookings")
+    .update({ [field]: value })
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) {
+    console.log(error);
+    throw new Error("Booking can't update");
+  }
+
+  return booking;
+}

@@ -4,7 +4,6 @@ import Status from "../../components/ui/Status";
 import { bookDate, daysAgo } from "../../helper/format";
 import { useBookingStatus } from "./useBookingStatus";
 import Spinner from "../../components/ui/Spinner";
-import { updateStatus } from "../../service/apiBookings";
 
 function BookingsTableRow({ booking }) {
   const navigate = useNavigate();
@@ -48,7 +47,7 @@ function BookingsTableRow({ booking }) {
     if (e.key.startsWith("check-in-")) {
       const bookingId = e.key.replace("check-in-", "");
 
-      updateStatus({ id: bookingId, status: "check in" });
+      navigate(`/check-in/${bookingId}`);
     }
     if (e.key.startsWith("check-out-")) {
       const bookingId = e.key.replace("check-out-", "");
