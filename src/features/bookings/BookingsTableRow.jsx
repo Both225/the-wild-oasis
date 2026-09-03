@@ -33,6 +33,10 @@ function BookingsTableRow({ booking }) {
       key: `check-in-${bookingId}`,
       label: "Check In",
     },
+    {
+      key: `check-out-${bookingId}`,
+      label: "Check Out",
+    },
   ];
 
   const handleMenuClick = async (e) => {
@@ -45,12 +49,13 @@ function BookingsTableRow({ booking }) {
       const bookingId = e.key.replace("check-in-", "");
 
       updateStatus({ id: bookingId, status: "check in" });
+    }
+    if (e.key.startsWith("check-out-")) {
+      const bookingId = e.key.replace("check-out-", "");
 
-      // Will return the change of booking status function
+      updateStatus({ id: bookingId, status: "check out" });
     }
   };
-
-  console.log(status);
 
   return (
     <>
@@ -73,7 +78,11 @@ function BookingsTableRow({ booking }) {
         <p className="text-primary text-center font-semibold">{totalPrice}$</p>
         <ActionDropDown
           items={
-            status === "unconfirmed" ? dropdownOptions : [dropdownOptions[0]]
+            status === "unconfirmed"
+              ? dropdownOptions
+              : status === "check in"
+                ? [dropdownOptions[2]]
+                : [dropdownOptions[0]]
           }
           handleMenuClick={handleMenuClick}
         />
