@@ -80,7 +80,7 @@ function BookingsTableRow({ booking }) {
             status === "unconfirmed"
               ? dropdownOptions
               : status === "check in"
-                ? [dropdownOptions[2]]
+                ? [dropdownOptions[0], dropdownOptions[2]]
                 : [dropdownOptions[0]]
           }
           handleMenuClick={handleMenuClick}

@@ -5,6 +5,7 @@ import { useBooking } from "../features/bookings/useBooking";
 import Spinner from "../components/ui/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatCurrency } from "../helper/format";
+import { useBookingStatus } from "../features/bookings/useBookingStatus";
 
 function BookingDetail() {
   const { booking, isLoading } = useBooking();
@@ -25,6 +26,7 @@ function BookingDetail() {
 function DetailContainer({ booking }) {
   const navigate = useNavigate();
   const { bookingId } = useParams();
+  const { isUpdating, updateStatus } = useBookingStatus();
 
   const {
     id,
@@ -41,6 +43,12 @@ function DetailContainer({ booking }) {
     guestId: guest,
     created_at,
   } = booking;
+
+  function onCheckOut() {
+    updateStatus({ id: bookingId, status: "check out" });
+  }
+
+  if (isUpdating) return <Spinner />;
 
   return (
     <section className="flex flex-col pb-10">
@@ -114,6 +122,23 @@ function DetailContainer({ booking }) {
           onClick={() => navigate(`/check-in/${bookingId}`)}
         >
           Check In
+        </Button>
+      )}
+      {status === "check in" && (
+        <Button
+          style={{
+            backgroundColor: "#10b981",
+            width: "fit-content",
+            alignSelf: "end",
+            marginRight: "3rem",
+          }}
+          type="primary"
+          onClick={() => {
+            onCheckOut();
+            navigate(`/bookings`);
+          }}
+        >
+          Check Out
         </Button>
       )}
     </section>
