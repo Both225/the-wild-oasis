@@ -14,6 +14,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 import BookingDetail from "./pages/BookingDetail.jsx";
 import CheckIn from "./pages/CheckIn.jsx";
+import LoginLayout from "./layout/LoginLayout.jsx";
+import LoginForm from "./pages/Login.jsx";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +49,16 @@ const router = createBrowserRouter([
       {
         path: "/user",
         element: <UserPage />,
+      },
+    ],
+  },
+  {
+    element: <LoginLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/login",
+        element: <LoginForm />,
       },
     ],
   },
