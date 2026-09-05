@@ -58,10 +58,10 @@ export async function updateStatus({ id, status }) {
   return booking;
 }
 
-export async function updateBooking({ id, field, value }) {
+export async function updateBooking(id, updateValue) {
   const { data: booking, error } = await supabase
     .from("bookings")
-    .update({ [field]: value })
+    .update(updateValue)
     .eq("id", id)
     .select()
     .single();

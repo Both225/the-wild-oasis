@@ -1,7 +1,10 @@
 import supabase from "./supabase";
 
-export async function getSettings() {
-  const { data: setting, error } = await supabase.from("setting").select("*");
+export async function getSetting() {
+  const { data: setting, error } = await supabase
+    .from("setting")
+    .select("*")
+    .single();
 
   if (error) {
     console.log(error);

@@ -3,7 +3,8 @@ import { HiArrowLeft, HiFlag, HiOutlineHome } from "react-icons/hi";
 import Status from "../components/ui/Status";
 import { useBooking } from "../features/bookings/useBooking";
 import Spinner from "../components/ui/Spinner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { formatCurrency } from "../helper/format";
 
 function BookingDetail() {
   const { booking, isLoading } = useBooking();
@@ -23,38 +24,30 @@ function BookingDetail() {
 
 function DetailContainer({ booking }) {
   const navigate = useNavigate();
+  const { bookingId } = useParams();
 
   const {
-    id: bookingId,
+    id,
     startDate,
     endDate,
-    cabinPrice: rawCabinPrice,
-    extrasPrice: rawExtrasPrice,
-    totalPrice: rawTotalPrice,
+    cabinPrice,
+    extrasPrice,
     status,
-    hasBreakfast: rawHasBreakfast,
-    isPaid: rawIsPaid,
-    obeservation,
+    hasBreakfast,
+    isPaid,
     numNights,
     cabinId,
+    numGuests,
     guestId: guest,
     created_at,
   } = booking;
-
-  const cabinPrice = rawCabinPrice ?? 180;
-  const extrasPrice = rawExtrasPrice ?? 60;
-  const totalPrice = rawTotalPrice ?? cabinPrice + extrasPrice;
-
-  const hasBreakfast = rawHasBreakfast ? "true" : "false";
-
-  const isPaid = rawIsPaid ? "Already paid" : "will paid at property";
 
   return (
     <section className="flex flex-col pb-10">
       <header className="flex items-center justify-between space-y-10 px-10">
         <div className="flex items-center gap-10">
           <h1 className="text-[2.4rem] font-bold">
-            Booking <span>#{bookingId}</span>
+            Booking <span>#{id}</span>
           </h1>
           <Status status={status} />
         </div>
@@ -91,14 +84,21 @@ function DetailContainer({ booking }) {
         </div>
         <p className="font-medium">
           Breakfast include?{" "}
-          <span className="ml-5 font-normal">{hasBreakfast}</span>
+          <span className="ml-5 font-normal">
+            {hasBreakfast ? "yes" : "no"}{" "}
+          </span>
         </p>
-        <div className="flex justify-between rounded-md bg-yellow-200 px-10 py-10 font-semibold text-yellow-700">
+        <p>Guests : {numGuests}</p>
+        <div
+          className={`flex justify-between rounded-md ${isPaid ? "bg-primary/80 text-white" : "bg-yellow-200 text-yellow-700"} px-10 py-10 font-semibold`}
+        >
           <p>
-            Total price {totalPrice} ({cabinPrice} cabin + {extrasPrice}
-            breakfast){" "}
+            Total price {formatCurrency(cabinPrice + extrasPrice)}{" "}
+            {hasBreakfast ? "" : "cabin"}{" "}
           </p>
-          <p className="uppercase">{isPaid}</p>
+          <p className="uppercase">
+            {isPaid ? "already paid" : "will paid at property"}
+          </p>
         </div>
         <p className="text-end">Booked {created_at?.split("T")[0]}</p>
       </div>
@@ -111,6 +111,7 @@ function DetailContainer({ booking }) {
             marginRight: "3rem",
           }}
           type="primary"
+          onClick={() => navigate(`/check-in/${bookingId}`)}
         >
           Check In
         </Button>

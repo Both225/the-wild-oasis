@@ -6,46 +6,74 @@ import { useBooking } from "../features/bookings/useBooking";
 import Spinner from "../components/ui/Spinner";
 import { Checkbox } from "antd";
 import { useBookingUpdate } from "../features/bookings/useBookingPayment";
+import { useState } from "react";
+import { formatCurrency } from "../helper/format";
+import { useSetting } from "../features/setting/useSetting";
+import { useCheckIn } from "../features/check-in-out/useCheckIn";
 
 function CheckIn() {
+  return (
+    <div className="bg-surface-darker h-full w-full px-18 py-10">
+      <div className="bg-surface space-y-10 rounded-lg pt-7">
+        <CheckInContainer />
+      </div>
+    </div>
+  );
+}
+
+export default CheckIn;
+
+function CheckInContainer() {
   const { booking, isLoading } = useBooking();
-  const { isUpdating, updateBooking } = useBookingUpdate();
+  const { isLoading: isLoadingSetting, setting } = useSetting();
+  const { isUpdating: isUpdateCheckIn, updateCheckIn } = useCheckIn();
+
+  const [addBreakfast, setAddBreakfast] = useState(false);
+  const [checkIn, setCheckIn] = useState(false);
+
   const navigate = useNavigate();
 
-  if (isLoading) <Spinner />;
-
-  if (isUpdating) <Spinner />;
+  if (isLoading || isUpdateCheckIn || isLoadingSetting) return <Spinner />;
 
   const {
-    id,
+    id: bookingId,
     startDate,
     endDate,
-    cabinPrice: rawCabinPrice,
-    extrasPrice: rawExtrasPrice,
-    totalPrice: rawTotalPrice,
+    cabinPrice,
+    extrasPrice,
+    totalPrice,
     status,
-    hasBreakfast: rawHasBreakfast,
+    hasBreakfast,
     isPaid,
-    obeservation,
     numNights,
     cabinId,
+    numGuests,
     guestId: guest,
     created_at,
   } = booking || {};
 
-  const cabinPrice = rawCabinPrice ?? 180;
-  const extrasPrice = rawExtrasPrice ?? 60;
-  const totalPrice = rawTotalPrice ?? cabinPrice + extrasPrice;
+  const { breakfastPrice } = setting;
 
-  const hasBreakfast = rawHasBreakfast ? "yes" : "no";
+  const optionalBreakfast = breakfastPrice * numGuests * numNights;
 
-  function onCheckPayment() {
-    updateBooking({ id: id, field: "isPaid", value: true });
+  function onConfirmPayment() {
+    setCheckIn((prev) => !prev);
   }
 
   function onCheckIn() {
-    updateBooking({ id: id, field: "status", value: "check in" });
-    navigate(-1);
+    updateCheckIn({
+      bookingId,
+      breakfast: {
+        hasBreakfast: addBreakfast,
+        extrasPrice: optionalBreakfast,
+        totalPrice: cabinPrice + optionalBreakfast,
+      },
+    });
+    navigate("/bookings?status=unconfirmed&page=0");
+  }
+
+  function onAddBreakfast() {
+    setAddBreakfast((prev) => !prev);
   }
 
   return (
@@ -53,7 +81,7 @@ function CheckIn() {
       <header className="flex items-center justify-between space-y-10 px-10">
         <div className="flex items-center gap-10">
           <h1 className="text-[2.4rem] font-bold">
-            Booking <span>#{id}</span>
+            Check In <span>#{bookingId}</span>
           </h1>
           <Status status={status} />
         </div>
@@ -78,7 +106,7 @@ function CheckIn() {
           <span>{startDate} (in month)</span> - <span>{endDate}</span>
         </p>
       </div>
-      <div className="space-y-12 px-10 py-8">
+      <div className="space-y-12 px-10 py-8 pb-2">
         <div className="flex items-center gap-25 font-medium">
           <p>
             <span className="mr-4">
@@ -91,14 +119,27 @@ function CheckIn() {
         </div>
         <p className="font-medium">
           Breakfast include?{" "}
-          <span className="ml-5 font-normal">{hasBreakfast}</span>
+          <span className="ml-5 font-normal">
+            {addBreakfast ? "yes" : "no"}
+          </span>
         </p>
+        <div className="flex gap-10">
+          <p>Guest {numGuests}</p>
+          <p>Night {numNights}</p>
+        </div>
         <div
           className={`flex justify-between rounded-md ${isPaid ? "bg-primary/80 text-white" : "bg-yellow-200 text-yellow-700"} px-10 py-10 font-semibold`}
         >
           <p>
-            Total price {totalPrice} ({cabinPrice} cabin + {extrasPrice}
-            breakfast){" "}
+            Total price{" "}
+            {formatCurrency(
+              addBreakfast
+                ? cabinPrice + optionalBreakfast
+                : cabinPrice + extrasPrice,
+            )}{" "}
+            {addBreakfast
+              ? `(${formatCurrency(cabinPrice)} cabin + ${formatCurrency(optionalBreakfast)} breakfast)`
+              : `cabin`}
           </p>
           <p className="uppercase">
             {isPaid ? "Already paid" : "will paid at property"}
@@ -106,24 +147,30 @@ function CheckIn() {
         </div>
         <p className="text-end">Booked {created_at?.split("T")[0]}</p>
       </div>
-      <div className="flex items-center justify-between px-10">
-        <Checkbox onChange={onCheckPayment} checked={isPaid} disabled={isPaid}>
+      <div className="flex flex-col gap-5 px-10">
+        <Checkbox
+          onChange={onAddBreakfast}
+          checked={addBreakfast}
+          disabled={hasBreakfast}
+        >
+          Want to add breakfast for {formatCurrency(optionalBreakfast)} (
+          {formatCurrency(breakfastPrice)} per person)
+        </Checkbox>
+        <Checkbox onChange={onConfirmPayment}>
           I confirm that {guest?.fullName} have paid the total amount
         </Checkbox>
-        <div className="flex gap-5">
-          <Button
-            type="primary"
-            style={{ backgroundColor: "#10b981" }}
-            disabled={!isPaid}
-            onClick={onCheckIn}
-          >
-            Check In
-          </Button>
-          <Button onClick={() => navigate(-1)}>Back</Button>
-        </div>
+      </div>
+      <div className="flex justify-end gap-5 pr-10">
+        <Button
+          type="primary"
+          style={{ backgroundColor: "#10b981" }}
+          disabled={!checkIn}
+          onClick={onCheckIn}
+        >
+          Check In
+        </Button>
+        <Button onClick={() => navigate(-1)}>Back</Button>
       </div>
     </section>
   );
 }
-
-export default CheckIn;
