@@ -15,7 +15,6 @@ function LoginForm() {
   const { errors } = formState;
 
   function onSubmit({ email, password }) {
-    console.log(email, password);
     loginUser({ email, password });
   }
 

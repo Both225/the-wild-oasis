@@ -16,10 +16,15 @@ import BookingDetail from "./pages/BookingDetail.jsx";
 import CheckIn from "./pages/CheckIn.jsx";
 import LoginLayout from "./layout/LoginLayout.jsx";
 import LoginForm from "./pages/Login.jsx";
+import ProtectedRoute from "./components/ui/ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
   {
-    element: <AppLayout />,
+    element: (
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {
