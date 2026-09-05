@@ -72,3 +72,7 @@ export async function updateBooking(id, updateValue) {
 
   return booking;
 }
+
+export async function deleteBooking(id) {
+  const { error } = await supabase.from("bookings").delete().eq("id", id);
+}

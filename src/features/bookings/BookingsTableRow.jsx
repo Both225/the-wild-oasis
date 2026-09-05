@@ -4,12 +4,14 @@ import Status from "../../components/ui/Status";
 import { bookDate, daysAgo } from "../../helper/format";
 import { useBookingStatus } from "./useBookingStatus";
 import Spinner from "../../components/ui/Spinner";
+import { useBookingDelete } from "./useBookingDelete";
 
 function BookingsTableRow({ booking }) {
   const navigate = useNavigate();
   const { isUpdating, updateStatus } = useBookingStatus();
+  const { isDelete, deleteBooking } = useBookingDelete();
 
-  if (isUpdating) return <Spinner />;
+  if (isUpdating || isDelete) return <Spinner />;
 
   const {
     id: bookingId,
@@ -36,6 +38,10 @@ function BookingsTableRow({ booking }) {
       key: `check-out-${bookingId}`,
       label: "Check Out",
     },
+    {
+      key: `delete-booking-${bookingId}`,
+      label: "Delete",
+    },
   ];
 
   const handleMenuClick = async (e) => {
@@ -53,6 +59,11 @@ function BookingsTableRow({ booking }) {
       const bookingId = e.key.replace("check-out-", "");
 
       updateStatus({ id: bookingId, status: "check out" });
+    }
+    if (e.key.startsWith("delete-booking-")) {
+      const bookingId = e.key.replace("delete-booking-", "");
+
+      deleteBooking(bookingId);
     }
   };
 
@@ -78,10 +89,10 @@ function BookingsTableRow({ booking }) {
         <ActionDropDown
           items={
             status === "unconfirmed"
-              ? dropdownOptions
+              ? [dropdownOptions[0], dropdownOptions[1], dropdownOptions[3]]
               : status === "check in"
-                ? [dropdownOptions[0], dropdownOptions[2]]
-                : [dropdownOptions[0]]
+                ? [dropdownOptions[0], dropdownOptions[2], dropdownOptions[3]]
+                : [dropdownOptions[0], dropdownOptions[3]]
           }
           handleMenuClick={handleMenuClick}
         />
