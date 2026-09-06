@@ -12,7 +12,7 @@ function BookingPage() {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="bg-surface-darker h-full w-full px-18 py-10">
+    <div className="bg-surface-darker h-full w-full px-12 py-10">
       <div className="bg-surface space-y-10 rounded-lg px-10 py-7">
         <BookingsHeader />
         <BookingsTable>

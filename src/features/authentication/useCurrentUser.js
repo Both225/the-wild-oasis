@@ -7,5 +7,9 @@ export function useCurrentUser() {
     queryFn: getCurrentUserApi,
   });
 
-  return { isLoading, isAuthenticated: currentUser?.role === "authenticated" };
+  return {
+    isLoading,
+    currentUser,
+    isAuthenticated: currentUser?.role === "authenticated",
+  };
 }

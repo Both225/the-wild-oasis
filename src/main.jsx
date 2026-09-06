@@ -7,7 +7,6 @@ import ErrorPage from "./layout/ErrorPage.jsx";
 import DashboardPage from "./features/dashboard/DashboardPage.jsx";
 import BookingPage from "./features/bookings/BookingPage.jsx";
 import CabinPage from "./features/cabins/CabinPage.jsx";
-import UserPage from "./features/user/UserPage.jsx";
 import SettingPage from "./features/setting/SettingPage.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -17,6 +16,7 @@ import CheckIn from "./pages/CheckIn.jsx";
 import LoginLayout from "./layout/LoginLayout.jsx";
 import LoginForm from "./pages/Login.jsx";
 import ProtectedRoute from "./components/ui/ProtectedRoute.jsx";
+import Users from "./pages/Users.jsx";
 
 const router = createBrowserRouter([
   {
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/user",
-        element: <UserPage />,
+        element: <Users />,
       },
     ],
   },

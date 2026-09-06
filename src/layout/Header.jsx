@@ -2,8 +2,9 @@ import { Button } from "antd";
 import Icon from "../components/ui/Icon";
 import { useSignOut } from "../features/authentication/useSignOut";
 import Spinner from "../components/ui/Spinner";
+import UserAvatar from "../features/user/UserAvatar";
 
-function Header({ selectedFeature }) {
+function Header() {
   const { isSignOut, signOut } = useSignOut();
 
   function onSignOut() {
@@ -14,12 +15,8 @@ function Header({ selectedFeature }) {
 
   return (
     <div className="bg-surface col-start-2 flex items-center justify-between px-12 py-6">
-      <h2 className="text-[2rem] font-semibold">{selectedFeature}</h2>
-      <div className="flex items-center gap-4">
-        <button className="cursor-pointer">
-          <Icon icon={"moon"} />
-        </button>
-        <p>profile</p>
+      <div className="flex w-full items-center justify-end gap-8">
+        <UserAvatar />
         <Button onClick={onSignOut}>Sign Out</Button>
       </div>
     </div>
