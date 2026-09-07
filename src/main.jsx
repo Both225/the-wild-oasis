@@ -17,6 +17,7 @@ import LoginLayout from "./layout/LoginLayout.jsx";
 import LoginForm from "./pages/Login.jsx";
 import ProtectedRoute from "./components/ui/ProtectedRoute.jsx";
 import Users from "./pages/Users.jsx";
+import UpdateAccount from "./pages/UpdateAccount.jsx";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "/user",
         element: <Users />,
+      },
+      {
+        path: "/account",
+        element: <UpdateAccount />,
       },
     ],
   },

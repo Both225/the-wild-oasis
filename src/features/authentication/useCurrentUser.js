@@ -10,6 +10,7 @@ export function useCurrentUser() {
   return {
     isLoading,
     currentUser,
-    isAuthenticated: currentUser?.role === "authenticated",
+    // Authenticated if a user object exists
+    isAuthenticated: Boolean(currentUser),
   };
 }

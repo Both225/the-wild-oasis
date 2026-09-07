@@ -4,12 +4,7 @@ import { useLogin } from "../features/authentication/useLogin";
 import Spinner from "../components/ui/Spinner";
 
 function LoginForm() {
-  const { formState, handleSubmit, control } = useForm({
-    defaultValues: {
-      email: "testing2026@gmail.com",
-      password: "test123",
-    },
-  });
+  const { formState, handleSubmit, control } = useForm();
   const { isLoading, loginUser } = useLogin();
 
   const { errors } = formState;

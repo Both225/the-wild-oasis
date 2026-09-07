@@ -8,12 +8,17 @@ export const Input = React.forwardRef(
       placeholder,
       required = false,
       className = "",
+
+      accept,
+      onChange,
       ...props
     },
     ref,
   ) => {
     return (
       <input
+        accept={accept}
+        onChange={onChange}
         ref={ref}
         type={type}
         id={id}
